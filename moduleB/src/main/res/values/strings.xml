@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="all" >
+    <string name="app_name">ModuleB</string>
+    <string name="test">ModuleTest</string>
+</resources>

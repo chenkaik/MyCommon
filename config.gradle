@@ -1,0 +1,35 @@
+ext {
+    // 表示是作为module还是application
+    isModule = true
+    // applicationId版本好sdkVersion统一管理
+    android = [
+            compileSdkVersion     : 30,
+            buildToolsVersion     : "30.0.3",
+            applicationId         : "com.example.mycommon",
+            minSdkVersion         : 21,
+            targetSdkVersion      : 30,
+            versionCode           : 1,
+            versionName           : "1.0",
+            testAndroidJUnitRunner: "androidx.test.runner.AndroidJUnitRunner"
+    ]
+
+    // 版本号
+    def KOTLIN_VERSION = "$kotlin_version"
+    def CORE_KTX_VERSION = "1.3.2"
+    def APP_COMPAT_VERSION = "1.2.0"
+    def MATERIAL_VERSION = "1.2.1"
+    def CONSTRAINT_LAYOUT_VERSION = "2.0.4"
+    def AROUTER_VERSION = "1.5.1"
+    def AROUTER_COMPILER_VERSION = "1.5.1"
+
+    // 三方库统一管理
+    dependencies = [
+            kotlin_version  : 'org.jetbrains.kotlin:kotlin-stdlib:' + KOTLIN_VERSION,
+            coreKtx         : 'androidx.core:core-ktx:' + CORE_KTX_VERSION,
+            appCompat       : 'androidx.appcompat:appcompat:' + APP_COMPAT_VERSION,
+            material        : 'com.google.android.material:material:' + MATERIAL_VERSION,
+            constraintLayout: 'androidx.constraintlayout:constraintlayout:' + CONSTRAINT_LAYOUT_VERSION,
+            arouter         : 'com.alibaba:arouter-api:' + AROUTER_VERSION,
+            arouterCompiler : 'com.alibaba:arouter-compiler:' + AROUTER_COMPILER_VERSION
+    ]
+}

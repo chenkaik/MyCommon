@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner rootProject.ext.android.testAndroidJUnitRunner
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+//    buildFeatures {
+//        dataBinding = true
+//        // for view binding :
+//        // viewBinding = true
+//    }
+
+}
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+dependencies {
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation rootProject.ext.dependencies.kotlin_version
+    implementation rootProject.ext.dependencies.coreKtx
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.material
+    implementation rootProject.ext.dependencies.constraintLayout
+    kapt rootProject.ext.dependencies.arouterCompiler
+    implementation project(":baseModule")
+    if (rootProject.ext.isModule) {
+        implementation project(":moduleMain")
+        implementation project(":moduleA")
+        implementation project(":moduleB")
+    }
+}

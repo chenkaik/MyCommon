@@ -1,0 +1,134 @@
+//plugins {
+//    id 'com.android.library'
+//    id 'kotlin-android'
+//}
+//
+//android {
+//    compileSdkVersion 30
+//    buildToolsVersion "30.0.3"
+//
+//    defaultConfig {
+//        minSdkVersion 21
+//        targetSdkVersion 30
+//        versionCode 1
+//        versionName "1.0"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles "consumer-rules.pro"
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//    }
+//}
+//
+//dependencies {
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation 'androidx.core:core-ktx:1.2.0'
+//    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    implementation 'com.google.android.material:material:1.1.0'
+//    testImplementation 'junit:junit:4.+'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//}
+
+//plugins {
+//    if (rootProject.ext.isModule) {
+//        id 'com.android.library'
+//    } else {
+//        id 'com.android.application'
+//    }
+//    id 'kotlin-android'
+//}
+
+if (rootProject.ext.isModule) {
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        // 是application才需要applicationId
+        if (!rootProject.ext.isModule) {
+            applicationId "com.example.modulemain"
+        }
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner rootProject.ext.android.testAndroidJUnitRunner
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+//    buildFeatures {
+//        dataBinding = true
+//        // for view binding :
+//        // viewBinding = true
+//    }
+
+    // resourcePrefix这个值只能限定xml里面的资源，并不能限定图片资源，所有图片资源仍然需要手动去修改资源名
+    resourcePrefix "modulemain_"
+
+    sourceSets {
+        main {
+            if (rootProject.ext.isModule) {
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    // 排除java/module文件夹下的所有文件
+                    exclude '*module'
+                }
+            }
+        }
+    }
+
+}
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+
+dependencies {
+    implementation rootProject.ext.dependencies.kotlin_version
+    implementation rootProject.ext.dependencies.coreKtx
+    implementation rootProject.ext.dependencies.appCompat
+    implementation rootProject.ext.dependencies.material
+    implementation rootProject.ext.dependencies.constraintLayout
+    kapt rootProject.ext.dependencies.arouterCompiler
+    implementation project(":baseModule")
+}
